@@ -13,6 +13,9 @@ set showmatch
 syntax enable
 syntax on
 
+" ctag 配置
+set tags="/"
+
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
@@ -52,6 +55,9 @@ Plug 'airblade/vim-gitgutter'
 " 注释插件
 Plug 'scrooloose/nerdcommenter'
 
+" 函数大纲显示
+Plug 'majutsushi/tagbar'
+
 call plug#end()
 
 set background=dark
@@ -67,18 +73,11 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-
-autocmd FileType go nnoremap <buffer> gd :call GodefUnderCursor()<cr>
-autocmd FileType go nnoremap <buffer> <C-]> :call GodefUnderCursor()<cr>
-let g:godef_split=3    "左右打开新窗口的时候
-let g:godef_same_file_in_same_window=1    "函数在同一个文件中时不需要打开新窗口
-
-
 nmap [h<Plug> GitGutterNextHunk
 nmap ]h<Plug> GitGutterPrevHunk
 
 
-" NerdTree Setting
+" #####NerdTree Setting
 " autocmd VimEnter * NERDTree 
 map <F3> :silent! NERDTreeToggle<CR>
 
@@ -110,16 +109,37 @@ let g:NERDTreeIndicatorMapCustom = {
 	\}
 
 
-" 注释配置
+"##### 注释配置
 let g:NERDSpaceDelims=1
 map <C-c> <leader>cb
 map <C-b> <leader>cu
 
-" ycm 配置
+"#### ycm 配置
 let g:ycm_filetype_whitelist = { 
 	\ "go" : 1
 	\}
-
 " 修改YCM 提示框颜色
 highlight Pmenu ctermbg=grey
 highlight PmenuSel ctermbg=black
+"### godef 配置
+autocmd FileType go nnoremap <buffer> gd :call GodefUnderCursor()<cr>
+let g:godef_split=3    "左右打开新窗口的时候
+let g:godef_same_file_in_same_window=1    "函数在同一个文件中时不需要打开新窗口
+
+
+
+
+"#### tagbar 配置
+nmap <silent> <F9> :TagbarToggle<CR>    
+let g:tagbar_ctags_bin = 'ctags'
+" 针对go 做的显示
+" let g:tagbar_type_go = {
+"   \ 'ctagstype': 'go',
+"   \ 'kinds' : [
+"       \'p:package',
+"       \'f:function',
+"       \'v:variables',
+"       \'t:type',
+"       \'c:const'
+"   \]
+"   \}
