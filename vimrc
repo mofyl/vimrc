@@ -49,6 +49,9 @@ Plug 'jiangmiao/auto-pairs'
 
 Plug 'airblade/vim-gitgutter'
 
+" 注释插件
+Plug 'scrooloose/nerdcommenter'
+
 call plug#end()
 
 set background=dark
@@ -91,7 +94,7 @@ let NERDTreeShowHidden=1
 let NERDTreeWinSize=20
 " " 在终端启动vim时，共享NERDTree
 " let g:nerdtree_tabs_open_on_console_startup=1
-" " 忽略一下文件的显示
+" " 忽略以下文件的显示
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 let g:NERDTreeIndicatorMapCustom = {
 	\ "Modified"  : "✹",
@@ -105,3 +108,18 @@ let g:NERDTreeIndicatorMapCustom = {
   \ 'Ignored'   : '☒',
   \ "Unknown"   : "?"
 	\}
+
+
+" 注释配置
+let g:NERDSpaceDelims=1
+map <C-c> <leader>cb
+map <C-b> <leader>cu
+
+" ycm 配置
+let g:ycm_filetype_whitelist = { 
+	\ "go" : 1
+	\}
+
+" 修改YCM 提示框颜色
+highlight Pmenu ctermbg=grey
+highlight PmenuSel ctermbg=black
