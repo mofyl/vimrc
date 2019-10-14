@@ -13,9 +13,6 @@ set showmatch
 syntax enable
 syntax on
 
-" ctag 配置
-set tags="/"
-
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
@@ -40,7 +37,7 @@ Plug 'acarapetis/vim-colors-github'
 Plug 'rakr/vim-one'
 
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
-Plug 'dgryski/vim-godef'
+" Plug 'dgryski/vim-godef'
 
 Plug 'Valloric/YouCompleteMe'
 
@@ -50,7 +47,9 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'jiangmiao/auto-pairs'
 
-Plug 'airblade/vim-gitgutter'
+" Git 插件
+" Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 " 注释插件
 Plug 'scrooloose/nerdcommenter'
@@ -73,8 +72,8 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-nmap [h<Plug> GitGutterNextHunk
-nmap ]h<Plug> GitGutterPrevHunk
+" nmap [h<Plug> GitGutterNextHunk
+" nmap ]h<Plug> GitGutterPrevHunk
 
 
 " #####NerdTree Setting
@@ -90,7 +89,7 @@ let NERDTreeShowLineNumbers=1
 " " 是否显示隐藏文件
 let NERDTreeShowHidden=1
 " " 设置宽度
-let NERDTreeWinSize=20
+let NERDTreeWinSize=30
 " " 在终端启动vim时，共享NERDTree
 " let g:nerdtree_tabs_open_on_console_startup=1
 " " 忽略以下文件的显示
@@ -108,8 +107,19 @@ let g:NERDTreeIndicatorMapCustom = {
   \ "Unknown"   : "?"
 	\}
 
+" ctag配置
+" ctag 配置
+set tags="/home/m/Documents/go/src/tags"
 
-"##### 注释配置
+
+nmap fd <C-]>
+nmap wfd <C-w>]
+let g:tagbar_ctags_bin = 'ctags'
+
+" cscope 配置
+cs add $CSCOPE_DB 
+
+" ##### 注释配置
 let g:NERDSpaceDelims=1
 map <C-c> <leader>cb
 map <C-b> <leader>cu
@@ -122,16 +132,20 @@ let g:ycm_filetype_whitelist = {
 highlight Pmenu ctermbg=grey
 highlight PmenuSel ctermbg=black
 "### godef 配置
-autocmd FileType go nnoremap <buffer> gd :call GodefUnderCursor()<cr>
-let g:godef_split=3    "左右打开新窗口的时候
-let g:godef_same_file_in_same_window=1    "函数在同一个文件中时不需要打开新窗口
+" autocmd FileType go nnoremap <buffer>fd :call GodefUnderCursor()<cr>
+" 0 是不分割不跳转
+" 1 是上下分割
+" 2 是打开新窗口
+" 3 是左右分割
+" let g:godef_split=1    "左右打开新窗口的时候
+" let g:godef_same_file_in_same_window=1    " 函数在同一个文件中时不需要打开新窗口
 
 
 
 
 "#### tagbar 配置
 nmap <silent> <F9> :TagbarToggle<CR>    
-let g:tagbar_ctags_bin = 'ctags'
+
 " 针对go 做的显示
 " let g:tagbar_type_go = {
 "   \ 'ctagstype': 'go',
