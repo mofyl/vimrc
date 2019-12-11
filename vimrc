@@ -67,6 +67,8 @@ Plug 'scrooloose/nerdcommenter'
 
 " 函数大纲显示
 Plug 'majutsushi/tagbar'
+" 异步代码检查
+Plug 'dense-analysis/ale'
 
 call plug#end()
 
@@ -91,23 +93,23 @@ let g:go_fmt_command = "goimports"
 
 " nmap [h<Plug> GitGutterNextHunk
 " nmap ]h<Plug> GitGutterPrevHunk
-
+set t_Co=256
 let g:airline_theme='bubblegum'
-let g:airline#extensions#tabline#left_sep = ' '  "separater
-let g:airline#extensions#tabline#left_alt_sep = '|'  "separater
-let g:airline#extensions#tabline#formatter = 'default'  "formater
-let g:airline_left_sep = '>>'
-let g:airline_left_alt_sep = '>'
-let g:airline_right_sep = '<<'
-let g:airline_right_alt_sep = '<'
+" let g:airline#extensions#tabline#left_sep = ' '  "separater
+" let g:airline#extensions#tabline#left_alt_sep = '|'  "separater
+" let g:airline#extensions#tabline#formatter = 'default'  "formater
+" let g:airline_left_sep = '>>'
+" let g:airline_left_alt_sep = '>'
+" let g:airline_right_sep = '<<'
+" let g:airline_right_alt_sep = '<'
 
 " #####NerdTree Setting
 " autocmd VimEnter * NERDTree 
 map <F3> :silent! NERDTreeToggle<CR>
 
 ""修改树的显示图标
-let g:NERDTreeDirArrowExpandable = '►'
-let g:NERDTreeDirArrowCollapsible = '▼'
+" let g:NERDTreeDirArrowExpandable = '►'
+" let g:NERDTreeDirArrowCollapsible = '▼'
 " let NERDTreeAutoCenter=1
 " 显示行号
 let NERDTreeShowLineNumbers=1
@@ -133,7 +135,7 @@ let g:NERDTreeIndicatorMapCustom = {
 	\}
 " ####ctag配置
 nmap fd <C-]>
-set tags="/home/m/Documents/go/src/tags"
+set tags="/home/m/go/src/tags"
 let g:tagbar_ctags_bin = 'ctags'
 
 " ####cscope 配置
@@ -153,7 +155,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 " 开启语义补全
 let g:ycm_seed_identifiers_with_syntax=1    
 " 禁止缓存匹配项,每次都重新生成匹配项
-let g:ycm_cache_omnifunc=0
+" let g:ycm_cache_omnifunc=0
 "补全后自动关闭预览窗口
 let g:ycm_autoclose_preview_window_after_completion = 1
 
@@ -174,6 +176,26 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 
 "#### tagbar 配置
 nmap <silent> <F9> :TagbarToggle<CR>    
+
+" ###### ale 
+"始终开启标志列
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 1
+"自定义error和warning图标
+let g:ale_sign_error = '✗'
+" let g:ale_sign_warning = '⚡'
+"在vim自带的状态栏中整合ale
+let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap sp <Plug>(ale_previous_wrap)
+nmap sn <Plug>(ale_next_wrap)
+
+let g:ale_linters ={'go': ['gofmt','govet' , 'gobuild' , 'goimports']}
+
 
 " 针对go 做的显示
 " let g:tagbar_type_go = {
