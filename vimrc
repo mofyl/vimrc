@@ -17,6 +17,7 @@ set noswapfile
 set foldmethod=indent  " 设置语法折叠
 set foldlevel=1
 set foldlevelstart=-1  " 打开文件是默认不折叠代码
+set mmp=2048
 syntax enable
 syntax on
 
@@ -67,11 +68,21 @@ Plug 'scrooloose/nerdcommenter'
 
 " 函数大纲显示
 Plug 'majutsushi/tagbar'
-" 异步代码检查
-Plug 'dense-analysis/ale'
 
+
+" " 模糊搜索
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
+
+
+Plug 'jremmen/vim-ripgrep'
+
+
+" 语法检查
+Plug 'scrooloose/syntastic'
 call plug#end()
 
+execute pathogen#infect()
 " set background=dark
 
 colorscheme monokai
@@ -139,7 +150,7 @@ set tags="/home/m/go/src/tags"
 let g:tagbar_ctags_bin = 'ctags'
 
 " ####cscope 配置
-cs add $CSCOPE_DB
+" cs add $CSCOPE_DB
 
 " ##### 注释配置
 let g:NERDSpaceDelims=1
@@ -179,22 +190,61 @@ nmap <silent> <F9> :TagbarToggle<CR>    
 
 " ###### ale 
 "始终开启标志列
-let g:ale_sign_column_always = 1
-let g:ale_set_highlights = 1
-"自定义error和warning图标
-let g:ale_sign_error = '✗'
-" let g:ale_sign_warning = '⚡'
-"在vim自带的状态栏中整合ale
-let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
-"显示Linter名称,出错或警告等相关信息
-let g:ale_echo_msg_error_str = 'E'
-" let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
-nmap sp <Plug>(ale_previous_wrap)
-nmap sn <Plug>(ale_next_wrap)
+" let g:ale_sign_column_always = 1
+" let g:ale_set_highlights = 1
+" "自定义error和warning图标
+" let g:ale_sign_error = '✗'
+" " let g:ale_sign_warning = '⚡'
+" "在vim自带的状态栏中整合ale
+" let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+" "显示Linter名称,出错或警告等相关信息
+" let g:ale_echo_msg_error_str = 'E'
+" " let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" "普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+" nmap sp <Plug>(ale_previous_wrap)
+" nmap sn <Plug>(ale_next_wrap)
 
-let g:ale_linters ={'go': ['gofmt','govet' , 'gobuild' , 'goimports']}
+" let g:ale_linters ={'go': ['gofmt','govet' , 'gobuild' , 'goimports']}
+
+"synt 配置
+"设置error和warning的标志
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol= '⚡'
+"总是打开Location List（相当于QuickFix）窗口，如果你发现syntastic因为与其他插件冲突而经常崩溃，将下面选项置0
+let g:syntastic_always_populate_loc_list = 1
+"自动打开Locaton List，默认值为2，表示发现错误时不自动打开，当修正以后没有再发现错误时自动关闭，置1表示自动打开自动关闭，0表示关闭自动打开和自动关闭，3表示自动打开，但不自动关闭
+let g:syntastic_auto_loc_list = 1
+"修改Locaton List窗口高度
+let g:syntastic_loc_list_height = 5
+"打开文件时自动进行检查
+let g:syntastic_check_on_open = 1
+"自动跳转到发现的第一个错误或警告处 0 表示不跳转
+let g:syntastic_auto_jump = 0
+"进行实时检查，如果觉得卡顿，将下面的选项置为1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_go_checkers = ['gobuild' , 'gofmt' , 'govet' , 'goimports']
+let g:syntastic_aggregate_errors = 1
+
+nmap sp :lnext<CR> 
+nmap sn :lprevious<CR>
+
+
+" fzf配置
+" fzf 中生成tags的命令
+" let g:fzf_tags_command = 'ctags -R'
+" " [Buffers] 如果可能跳到已存在窗口
+" let g:fzf_buffers_jump = 1
+
+
+" command! -bang -nargs=* Ag
+"   \ call fzf#vim#ag(<q-args>,
+"   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+"   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+"   \                 <bang>0)
+" nnoremap <silent> <Leader>A :Ag<CR>
 
 
 " 针对go 做的显示
