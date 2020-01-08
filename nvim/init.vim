@@ -62,16 +62,17 @@ Plug 'mhartington/oceanic-next'
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 " Plug 'dgryski/vim-godef'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
-endif
-" deoplete 的golang 组件
-Plug 'zchee/deoplete-go', { 'do': 'make' , 'for': 'go'}
+" if has('nvim')
+"     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
+" else
+"   " Plug 'Shougo/deoplete.nvim'
+"   " Plug 'roxma/nvim-yarp'
+"   " Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" " deoplete 的golang 组件
+" Plug 'zchee/deoplete-go', { 'do': 'make' , 'for': 'go'}
 
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " 可以使 nerdtree 的 tab 更加友好些
 Plug 'scrooloose/nerdtree'
@@ -141,8 +142,10 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+let g:go_highlight_function_calls = 1
 let g:go_fmt_command = "goimports"
 let g:go_def_mode="gopls"
+let g:go_info_mode='gopls'
 " nmap [h<Plug> GitGutterNextHunk
 " nmap ]h<Plug> GitGutterPrevHunk
 " let g:airline_theme='bubblegum'
@@ -192,9 +195,6 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 
-" godef 配置
-" autocmd FileType go nnoremap <buffer> fd :call UnderCursor()<cr>
-" autocmd FileType go nnoremap <buffer> <C-]> :call GodefUnderCursor()<cr>
 nmap fd <C-]>
 "####ctag配置
 " set tags="/home/m/go/src/tags"
@@ -231,24 +231,29 @@ nmap en <Plug>(ale_next_wrap)
 
 let g:ale_linters ={'go': ['gofmt','govet' , 'gobuild' , 'goimports']}
 
-" deoplete-go settings
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-  \ 'smart_case': v:true,
-  \ })
-" cgo support
-" let g:deoplete#sources#go#cgo = 1
+" " deoplete-go settings
+" set runtimepath+=~/.config/nvim/plugged/deoplete.nvim/
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#sources#go#gocode_binary = '~/go/bin/gocode-gomod'
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
-let g:deoplete#sources#go#pointer = 1
+" " cgo support
+" " let g:deoplete#sources#go#cgo = 1
 
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '~/.vim/deopletecache/deoplete/go/'
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-let g:deoplete#sources#go = ['vim-go']
-let g:deoplete#sources#go#gocode_binary = '/dev/null'
+" let g:deoplete#sources#go#pointer = 1
 
+" let g:deoplete#sources#go = ['vim-go']
+" let g:deoplete#sources#go#use_cache = 1
+" let g:deoplete#sources#go#json_directory = '~/.vim/deopletecache/deoplete/go/'
+
+" call deoplete#custom#option({
+"     \   'on_insert_enter': v:false,
+"     \   'ignore_case': v:true,
+"     \   'smart_case': v:true,
+"     \ })
+
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" let g:python3_host_prog = '/usr/bin/python3'
 " 括号颜色
 "
 let g:rbpt_max = 16
@@ -284,6 +289,23 @@ set laststatus=2  "设置vim状态栏数量为2，用于显示powerline的内容
 set showtabline=2 "'始终显示窗口上头的tabline'
 " set noshowmode    "'Hide the default mode text (e.g. -- INSERT -- below the statusline)'
 let g:Powerline_symbols= "fancy"
+
+
+" Coc 配置
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+	  let col = col('.') - 1
+		  return !col || getline('.')[col - 1]  =~# '\s'
+		endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" 绑定 ctrl-space 触发补全
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " fzf配置
 " fzf 中生成tags的命令

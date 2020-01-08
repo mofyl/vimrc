@@ -1,0 +1,16 @@
+{
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": [".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+			 "initializationOptions": {
+					"diagnosticsEnabled": true,
+					"lintTool": "golint",
+          "cache": {
+           "directory": "~/.vim/cache"
+          } 
+			}
+  }
+}
+}
