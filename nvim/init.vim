@@ -25,6 +25,7 @@ set t_Co=256
 
 set langmenu=zh_CN
 let $LANG = 'zh_CN.UTF-8'
+" set guifont=~/.local/share/fonts/sourcecode/OTF/SourceCodePro-Black.otf\ 12
 
 set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936
 set encoding=utf-8
@@ -79,8 +80,8 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'jiangmiao/auto-pairs'
+" Plug 'ryanoasis/vim-devicons'
 
-" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " 注释插件
@@ -141,7 +142,7 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
-
+let g:go_def_mode="gopls"
 " nmap [h<Plug> GitGutterNextHunk
 " nmap ]h<Plug> GitGutterPrevHunk
 " let g:airline_theme='bubblegum'
@@ -191,11 +192,13 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 
-
-"####ctag配置
+" godef 配置
+" autocmd FileType go nnoremap <buffer> fd :call UnderCursor()<cr>
+" autocmd FileType go nnoremap <buffer> <C-]> :call GodefUnderCursor()<cr>
 nmap fd <C-]>
-set tags="/home/m/go/src/tags"
-let g:tagbar_ctags_bin = 'ctags'
+"####ctag配置
+" set tags="/home/m/go/src/tags"
+" let g:tagbar_ctags_bin = 'ctags'
 
 " ####cscope 配置
 " cs add $CSCOPE_DB
@@ -243,7 +246,8 @@ let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.vim/deopletecache/deoplete/go/'
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
+let g:deoplete#sources#go = ['vim-go']
+let g:deoplete#sources#go#gocode_binary = '/dev/null'
 
 " 括号颜色
 "
