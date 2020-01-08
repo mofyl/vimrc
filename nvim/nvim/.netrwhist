@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/m/go/src/v5-server/src/me.xiaoka.v5'
+let g:netrw_dirhist_2='/home/m/go/src/v5-server/src/me.xiaoka.v5/micro'
+let g:netrw_dirhist_3='/home/m/go/src/v5-server/src/me.xiaoka.v5/micro/finance'
+let g:netrw_dirhist_4='/home/m/go/src/v5-server/src/me.xiaoka.v5/micro/finance/services'
