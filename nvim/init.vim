@@ -26,7 +26,7 @@ set t_Co=256
 set langmenu=zh_CN
 let $LANG = 'zh_CN.UTF-8'
 " set guifont=~/.local/share/fonts/sourcecode/OTF/SourceCodePro-Black.otf\ 12
-
+" set guifont=Monospace\ 12
 set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936
 set encoding=utf-8
 set termencoding=utf-8
@@ -82,15 +82,13 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'ryanoasis/vim-devicons'
-
+" 集成git
 Plug 'tpope/vim-fugitive'
-
 " 注释插件
 Plug 'scrooloose/nerdcommenter'
 
 " 函数大纲显示
 Plug 'majutsushi/tagbar'
-
 
 " " 模糊搜索
 " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -132,31 +130,33 @@ let g:airline#extensions#tabline#left_sep = ' '   "tabline中未激活buffer两�
 let g:airline#extensions#tabline#left_alt_sep = '|'      "tabline中buffer显示编号
 let g:airline#extensions#tabline#buffer_nr_show = 1  
 let g:airline_powerline_fonts = 1   " 使用powerline打过补丁的字体
-" 映射切换buffer的键位
-nnoremap [b :bp<CR>
-nnoremap ]b :bn<CR>
-
-
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_function_calls = 1
-let g:go_fmt_command = "goimports"
-let g:go_def_mode="gopls"
-let g:go_info_mode='gopls'
-" nmap [h<Plug> GitGutterNextHunk
-" nmap ]h<Plug> GitGutterPrevHunk
-" let g:airline_theme='bubblegum'
-let g:airline#extensions#tabline#left_sep = ' '  "separater
-let g:airline#extensions#tabline#left_alt_sep = '|'  "separater
-let g:airline#extensions#tabline#formatter = 'default'  "formater
+let g:airline_theme='bubblegum'
 let g:airline_left_sep = '>>'
 let g:airline_left_alt_sep = '>'
 let g:airline_right_sep = '<<'
 let g:airline_right_alt_sep = '<'
 
+" 映射切换buffer的键位
+nnoremap <tab> :b#<CR>
+
+" vim-go 
+let g:go_list_type = "quickfix"
+let g:go_gopls_complete_unimported = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_generate_tags = 1
+let g:go_highlight_format_strings = 1
+
+let g:go_fmt_command = "goimports"
+let g:go_def_mode="gopls"
+let g:go_info_mode='gopls'
+" nmap [h<Plug> GitGutterNextHunk
+" nmap ]h<Plug> GitGutterPrevHunk
 " #####NerdTree Setting
 " autocmd VimEnter * NERDTree 
 map <F3> :silent! NERDTreeToggle<CR>
@@ -177,6 +177,39 @@ let NERDTreeWinSize=30
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 " NERDTree git 状态
 let g:NERDTreeShowIgnoredStatus = 1
+
+let g:tagbar_compact = 1
+    let g:tagbar_autoshowtag = 1
+    let g:tagbar_type_go = {
+        \ 'ctagstype' : 'go',
+        \ 'kinds'     : [
+            \ 'p:package',
+            \ 'i:imports:1',
+            \ 'c:constants',
+            \ 'v:variables',
+            \ 't:types',
+            \ 'n:interfaces',
+            \ 'w:fields',
+            \ 'e:embedded',
+            \ 'm:methods',
+            \ 'r:constructor',
+            \ 'f:functions'
+        \ ],
+        \ 'sro' : '.',
+        \ 'kind2scope' : {
+            \ 't' : 'ctype',
+            \ 'n' : 'ntype'
+        \ },
+        \ 'scope2kind' : {
+            \ 'ctype' : 't',
+            \ 'ntype' : 'n'
+        \ },
+        \ 'ctagsbin'  : 'gotags',
+        \ 'ctagsargs' : '-sort -silent'
+    \ }
+
+
+
 " let g:NERDTreeIndicatorMapCustom = {
 "   \ "Modified"  : "✹",
 "   \ "Staged"    : "✚",
