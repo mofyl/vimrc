@@ -1,10 +1,8 @@
-filetype on
-filetype indent on
+filetype plugin indent on
 filetype plugin on
-
-set number 
-set foldenable " 开始折叠
-" set mouse=a
+syntax on
+set number
+scriptencoding utf-8
 set encoding=utf-8
 set tabstop=2
 set shiftwidth=2
@@ -14,249 +12,277 @@ set showmatch
 set hlsearch
 set incsearch
 set noswapfile
-set foldmethod=indent  " 设置语法折叠
-set foldlevel=1
-set foldlevelstart=-1  " 打开文件是默认不折叠代码
+set nofoldenable
+set nobackup
+set nowritebackup
+set ambiwidth=double
+" set updatetime=300
+set t_Co=256
+set laststatus=2 "1为关闭底部状态栏 2为开启"
+set backspace=2
 set mmp=2048
-syntax enable
-syntax on
-
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-call plug#begin('~/.vim/plugged')
-
-" 状态栏
+" 设置 <leader> 键  现在设置为 空格
+let mapleader = "\<space>"
+call plug#begin()
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'luochen1990/rainbow'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" 状态栏主题
-Plug 'connorholyday/vim-snazzy'
-" 状态栏主题
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'ayu-theme/ayu-vim'
-
-Plug 'bling/vim-bufferline'
-
-" 配色方案
-" colorscheme neodark
-Plug 'KeitaNakamura/neodark.vim'
-" " colorscheme monokai
-Plug 'crusoexia/vim-monokai'
-" " colorscheme github 
-Plug 'acarapetis/vim-colors-github'
-" " colorscheme one 
-Plug 'rakr/vim-one'
-
-Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
-" Plug 'dgryski/vim-godef'
-
-Plug 'Valloric/YouCompleteMe'
-
-" 可以使 nerdtree 的 tab 更加友好些
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-
-Plug 'jiangmiao/auto-pairs'
-
-" Git 插件
-" Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-
-" 注释插件
+ " Plug 'itchyny/lightline.vim'
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'yuttie/hydrangea-vim'
+Plug 'tomasiser/vim-code-dark'
 Plug 'scrooloose/nerdcommenter'
-
-" 函数大纲显示
-Plug 'majutsushi/tagbar'
-
-
-" " 模糊搜索
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
-
-
-Plug 'jremmen/vim-ripgrep'
-
-
-" 语法检查
-Plug 'scrooloose/syntastic'
+" file tree
+Plug 'Shougo/defx.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+" 快速单词间快速跳转
+Plug 'easymotion/vim-easymotion'
+" 静态检查
+Plug 'dense-analysis/ale'
+" 注释插件
+Plug 'tpope/vim-commentary'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
-
-execute pathogen#infect()
-" set background=dark
-
-colorscheme monokai
-" let g:colors_name="nslib_color256"
-
-" let g:go_version_warning = 0
-
-
-" 总是显示状态栏 
-let laststatus = 2
-
-
+set termguicolors
+let g:rehash256 = 1
+set background=dark
+colorscheme hydrangea
+let g:go_fmt_command = "goimports" " 格式化将默认的 gofmt 替换
+let g:go_version_warning = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
+let g:go_highlight_function_calls = 1
 let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_fmt_command = "goimports"
-
-" nmap [h<Plug> GitGutterNextHunk
-" nmap ]h<Plug> GitGutterPrevHunk
-set t_Co=256
-let g:airline_theme='bubblegum'
-" let g:airline#extensions#tabline#left_sep = ' '  "separater
-" let g:airline#extensions#tabline#left_alt_sep = '|'  "separater
-" let g:airline#extensions#tabline#formatter = 'default'  "formater
-" let g:airline_left_sep = '>>'
-" let g:airline_left_alt_sep = '>'
-" let g:airline_right_sep = '<<'
-" let g:airline_right_alt_sep = '<'
-
-" #####NerdTree Setting
-" autocmd VimEnter * NERDTree 
-map <F3> :silent! NERDTreeToggle<CR>
-
-""修改树的显示图标
-" let g:NERDTreeDirArrowExpandable = '►'
-" let g:NERDTreeDirArrowCollapsible = '▼'
-" let NERDTreeAutoCenter=1
-" 显示行号
-let NERDTreeShowLineNumbers=1
-" " 是否显示隐藏文件
-let NERDTreeShowHidden=1
-" " 设置宽度
-let NERDTreeWinSize=30
-" " 在终端启动vim时，共享NERDTree
-" let g:nerdtree_tabs_open_on_console_startup=1
-" " 忽略以下文件的显示
-let NERDTreeIgnore=['\.pyc','\~$','\.swp']
-let g:NERDTreeIndicatorMapCustom = {
-	\ "Modified"  : "✹",
-  \ "Staged"    : "✚",
-  \ "Untracked" : "✭",
-  \ "Renamed"   : "➜",
-  \ "Unmerged"  : "═",
-  \ "Deleted"   : "✖",
-	\ "Dirty"     : "✗",
-  \ "Clean"     : "✔︎",
-  \ 'Ignored'   : '☒',
-  \ "Unknown"   : "?"
-	\}
-" ####ctag配置
-nmap fd <C-]>
-set tags="/home/m/go/src/tags"
-let g:tagbar_ctags_bin = 'ctags'
-
-" ####cscope 配置
-" cs add $CSCOPE_DB
-
-" ##### 注释配置
-let g:NERDSpaceDelims=1
-map <C-c> <leader>cb
-map <C-b> <leader>cu
-
-"#### ycm 配置
-let g:ycm_filetype_whitelist = { 
-	\ "go" : 1
-	\}
-"开启基于tag的补全，可以在这之后添加需要的标签路径
-let g:ycm_collect_identifiers_from_tags_files = 1
-" 开启语义补全
-let g:ycm_seed_identifiers_with_syntax=1    
-" 禁止缓存匹配项,每次都重新生成匹配项
-" let g:ycm_cache_omnifunc=0
-"补全后自动关闭预览窗口
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-" 修改YCM 提示框颜色
-" highlight Pmenu ctermbg=grey
-" highlight PmenuSel ctermbg=black
-"### godef 配置
-" autocmd FileType go nnoremap <buffer>fd :call GodefUnderCursor()<cr>
-" 0 是不分割不跳转
-" 1 是上下分割
-" 2 是打开新窗口
-" 3 是左右分割
-" let g:godef_split=1    "左右打开新窗口的时候
-" let g:godef_same_file_in_same_window=1    " 函数在同一个文件中时不需要打开新窗口
-
-
-
-
-"#### tagbar 配置
-nmap <silent> <F9> :TagbarToggle<CR>    
-
-" ###### ale 
-"始终开启标志列
-" let g:ale_sign_column_always = 1
-" let g:ale_set_highlights = 1
-" "自定义error和warning图标
-" let g:ale_sign_error = '✗'
-" " let g:ale_sign_warning = '⚡'
-" "在vim自带的状态栏中整合ale
-" let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
-" "显示Linter名称,出错或警告等相关信息
-" let g:ale_echo_msg_error_str = 'E'
-" " let g:ale_echo_msg_warning_str = 'W'
-" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-" "普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
-" nmap sp <Plug>(ale_previous_wrap)
-" nmap sn <Plug>(ale_next_wrap)
-
-" let g:ale_linters ={'go': ['gofmt','govet' , 'gobuild' , 'goimports']}
-
-"synt 配置
-"设置error和warning的标志
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol= '⚡'
-"总是打开Location List（相当于QuickFix）窗口，如果你发现syntastic因为与其他插件冲突而经常崩溃，将下面选项置0
-let g:syntastic_always_populate_loc_list = 1
-"自动打开Locaton List，默认值为2，表示发现错误时不自动打开，当修正以后没有再发现错误时自动关闭，置1表示自动打开自动关闭，0表示关闭自动打开和自动关闭，3表示自动打开，但不自动关闭
-let g:syntastic_auto_loc_list = 1
-"修改Locaton List窗口高度
-let g:syntastic_loc_list_height = 5
-"打开文件时自动进行检查
-let g:syntastic_check_on_open = 1
-"自动跳转到发现的第一个错误或警告处 0 表示不跳转
-let g:syntastic_auto_jump = 0
-"进行实时检查，如果觉得卡顿，将下面的选项置为1
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_go_checkers = ['gobuild' , 'gofmt' , 'govet' , 'goimports']
-let g:syntastic_aggregate_errors = 1
-
-nmap sp :lnext<CR> 
-nmap sn :lprevious<CR>
-
-
-" fzf配置
-" fzf 中生成tags的命令
-" let g:fzf_tags_command = 'ctags -R'
-" " [Buffers] 如果可能跳到已存在窗口
-" let g:fzf_buffers_jump = 1
-
-
-" command! -bang -nargs=* Ag
-"   \ call fzf#vim#ag(<q-args>,
-"   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-"   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-"   \                 <bang>0)
-" nnoremap <silent> <Leader>A :Ag<CR>
-
-
-" 针对go 做的显示
-" let g:tagbar_type_go = {
-"   \ 'ctagstype': 'go',
-"   \ 'kinds' : [
-"       \'p:package',
-"       \'f:function',
-"       \'v:variables',
-"       \'t:type',
-"       \'c:const'
-"   \]
-"   \}
-"
-"
+let g:go_highlight_extra_types = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_generate_tags = 1
+let g:go_autodetect_gopath = 1
+let g:godef_split=2
+let g:go_gopls_options = ['-remote=auto']
+let g:deoplete#enable_at_startup = 1
+augroup go
+  autocmd!
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+augroup END
+" ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:Lf_PreviewInPopup = 1
+let g:Lf_WindowHeight=0.30
+" leaderf
+noremap ff :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+" search visually selected text literally, don't quit LeaderF after accepting an entry
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F --stayOpen -e %s ", leaderf#Rg#visual())<CR>
+" 彩虹括号
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+\   'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
+\   'ctermfgs': ['lightyellow', 'lightcyan','lightblue', 'lightmagenta'],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\       '*': {},
+\       'tex': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\       },
+\       'lisp': {
+\           'guifgs': ['darkorange3', 'seagreen3', 'royalblue3', 'firebrick'],
+\       },
+\       'vim': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\       },
+\       'html': {
+\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\       },
+\       'css': 0,
+\   }
+\}
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+let g:airline_powerline_fonts = 1
+" 设置状态栏
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '  "separater
+let g:airline#extensions#tabline#left_alt_sep = '|'  "separater
+let g:airline_theme='behelit'
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_idx_format = {
+       \ '0': '0 ',
+       \ '1': '1 ',
+       \ '2': '2 ',
+       \ '3': '3 ',
+       \ '4': '4 ',
+       \ '5': '5 ',
+       \ '6': '6 ',
+       \ '7': '7 ',
+       \ '8': '8 ',
+       \ '9': '9 '
+       \}
+" 设置切换tab的快捷键 <leader> + <i> 切换到第i个 tab
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+" 设置切换tab的快捷键 <\> + <-> 切换到前一个 tab
+nmap <leader>- <Plug>AirlineSelectPrevTab
+" 设置切换tab的快捷键 <\> + <+> 切换到后一个 tab
+nmap <leader>+ <Plug>AirlineSelectNextTab
+" 设置切换tab的快捷键 <\> + <q> 退出当前的 tab
+nmap <leader>q :bp<cr>:bd #<cr>
+" 注释插件
+" mm智能判断加上/解开注释
+map mm gcc<space>
+" lightline
+ " let g:lightline = {
+"   \ 'active': {
+"   \   'left': [
+"   \     [ 'mode', 'paste' ],
+"   \     [ 'ctrlpmark', 'git', 'diagnostic', 'filename', 'method' ]
+"   \   ],
+"   \   'right':[
+"   \     [ 'filetype', 'fileencoding', 'lineinfo', 'percent' ],
+"   \     [ 'blame' ]
+"   \   ],
+"   \ },
+"   \ 'component_function': {
+"   \   'blame': 'LightlineGitBlame',
+"   \ }
+" \ }
+" defx 配置
+nmap <silent> <F3> :Defx  -search=`expand('%:p')` -toggle <cr>
+call defx#custom#option('_', {
+            \ 'winwidth': 30,
+            \ 'split': 'vertical',
+            \ 'direction': 'topleft',
+            \ 'show_ignored_files': 0,
+            \ 'buffer_name': '',
+            \ 'toggle': 1,
+            \ 'resume': 1
+            \ })
+let g:defx_icons_enable_syntax_highlight = 1
+let g:defx_icons_column_length = 1
+let g:defx_icons_term_colors = {
+\ 'red': 2
+\ }
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+    " Define mappings
+    setl nonu                            " 勿在 defx 栏显示行号
+    nnoremap <silent><buffer><expr> <CR>
+                \ defx#is_directory() ?
+                \ defx#do_action('open_or_close_tree') :
+                \ defx#do_action('drop',)
+    nnoremap <silent><buffer><expr> c    " 复制
+                \ defx#do_action('copy')
+    nnoremap <silent><buffer><expr> K    " 新建文件夾
+                \ defx#do_action('new_directory')
+    nnoremap <silent><buffer><expr> N    " 新建文件
+                \ defx#do_action('new_file')
+endfunction
+" ale-setting {{{
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
+"自定义error和warning图标
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = ''
+let g:ale_echo_msg_warning_str = ''
+let g:ale_echo_msg_format = '[#%linter%#] %s [%severity%]'
+let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
+"打开文件时不进行检查
+"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap sp <Plug>(ale_previous_wrap)
+nmap sn <Plug>(ale_next_wrap)
+"<Leader>s触发/关闭语法检查
+ nmap <Leader>l :ALEToggle<CR>
+"<Leader>d查看错误或警告的详细信息
+nmap <Leader>d :ALEDetail<CR>
+let g:ale_linters = {
+    \ 'go': ['staticcheck'],
+    \ }
+" easymotion 配置
+nmap ss <Plug>(easymotion-s2)
+" set laststatus=2
+" let g:lightline = {
+"   \ 'colorscheme': 'hydrangea',
+"   \ 'active': {
+"   \   'left': [ [ 'mode', 'paste' ],
+"   \						  ['ctrlpmark', 'git', 'diagnostic', 'filename', 'method' ] ],
+" 	\   'right': [
+"   \     [ 'filetype', 'fileencoding', 'lineinfo', 'percent' ],
+"   \     [ 'blame' ]
+"   \   ],
+"   \
+"   \ },
+"   \ 'component': {
+"   \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+"   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+"   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+"   \ },
+"   \ 'component_visible_condition': {
+"   \   'readonly': '(&filetype!="help"&& &readonly)',
+"   \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+"   \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+"   \ },
+" 	\ 'component_function': {
+"   \   'blame': 'LightlineGitBlame',
+"   \ },
+"   \ 'separator': { 'left': '', 'right': '' },
+"   \ 'subseparator': { 'left': '∿', 'right': '❂' }
+"   \ }
+function! LightlineGitBlame() abort
+  let blame = get(b:, 'coc_git_blame', '')
+  " return blame
+  return winwidth(0) > 120 ? blame : ''
+endfunction
